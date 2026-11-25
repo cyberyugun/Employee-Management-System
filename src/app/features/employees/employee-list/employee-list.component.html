@@ -1,0 +1,180 @@
+<div class="page-heading">
+  <div>
+    <span class="eyebrow">PEOPLE DIRECTORY</span>
+    <h1>Employee <em>directory</em></h1>
+    <p class="page-subtitle">Manage your people, keep information organised, and stay in sync.</p>
+  </div>
+  <button class="primary-button" type="button" (click)="addEmployee()"><span>＋</span> Add employee</button>
+</div>
+
+<div class="stats-grid">
+  <article class="stat-card"><div class="stat-card__top"><span class="stat-card__label">Total employees</span><span class="stat-icon stat-icon--violet">♙</span></div><strong>{{ totalEmployees() }}</strong><span class="stat-card__note">People in your directory</span></article>
+  <article class="stat-card"><div class="stat-card__top"><span class="stat-card__label">Permanent staff</span><span class="stat-icon stat-icon--green">✓</span></div><strong>{{ activeEmployees() }}</strong><span class="stat-card__note">Employees with permanent status</span></article>
+  <article class="stat-card"><div class="stat-card__top"><span class="stat-card__label">Departments</span><span class="stat-icon stat-icon--orange">▤</span></div><strong>{{ groupCount() }}</strong><span class="stat-card__note">Across the organisation</span></article>
+</div>
+
+<section class="directory-card">
+  <div class="directory-card__header">
+    <div><h2>All employees</h2><p>Search by employee details and filter by group. Filters are combined with AND.</p></div>
+    <span class="record-count">{{ totalEmployees() }} RECORDS</span>
+  </div>
+
+  <div class="filters">
+    <label class="search-field">
+      <span aria-hidden="true">⌕</span>
+      <input
+        type="search"
+        placeholder="Search name, username or email..."
+        [value]="state().searchTerm"
+        (input)="onSearchChange($event)"
+        aria-label="Search name, username or email"
+      >
+    </label>
+
+    <div class="group-filter" (click)="$event.stopPropagation()" (keydown.escape)="closeGroupDropdown()">
+      <button
+        class="group-filter__trigger"
+        [class.is-open]="isGroupDropdownOpen()"
+        type="button"
+        aria-haspopup="listbox"
+        aria-controls="employeeGroupOptions"
+        [attr.aria-expanded]="isGroupDropdownOpen()"
+        [attr.aria-label]="state().groupTerm || 'Filter by group'"
+        (click)="toggleGroupDropdown()"
+      >
+        <span class="group-filter__icon" aria-hidden="true">⌕</span>
+        <span [class.is-placeholder]="!state().groupTerm">{{ state().groupTerm || 'All groups' }}</span>
+        <svg class="group-filter__chevron" viewBox="0 0 20 20" aria-hidden="true"><path d="m5 7.5 5 5 5-5" /></svg>
+      </button>
+
+      @if (isGroupDropdownOpen()) {
+        <div class="group-filter__menu">
+          <label class="group-filter__search">
+            <span aria-hidden="true">⌕</span>
+            <input
+              type="search"
+              [value]="groupSearch()"
+              (input)="groupSearch.set($any($event.target).value)"
+              placeholder="Search groups..."
+              aria-label="Search groups"
+              autocomplete="off"
+            >
+          </label>
+          <div id="employeeGroupOptions" class="group-filter__options" role="listbox" aria-label="Employee groups">
+            <button
+              class="group-filter__option"
+              [class.is-selected]="!state().groupTerm"
+              type="button"
+              role="option"
+              [attr.aria-selected]="!state().groupTerm"
+              (click)="selectGroup('')"
+            >
+              <span>All groups</span>
+              @if (!state().groupTerm) { <span class="group-filter__check" aria-hidden="true">✓</span> }
+            </button>
+            @for (group of filteredGroups(); track group) {
+              <button
+                class="group-filter__option"
+                [class.is-selected]="state().groupTerm === group"
+                type="button"
+                role="option"
+                [attr.aria-selected]="state().groupTerm === group"
+                (click)="selectGroup(group)"
+              >
+                <span>{{ group }}</span>
+                @if (state().groupTerm === group) { <span class="group-filter__check" aria-hidden="true">✓</span> }
+              </button>
+            } @empty {
+              <p class="group-filter__empty">No groups match your search.</p>
+            }
+          </div>
+        </div>
+      }
+    </div>
+
+    <button class="text-button" type="button" (click)="clearFilters()">Clear filters</button>
+  </div>
+
+  <div class="table-scroll">
+    <table>
+      <thead>
+        <tr>
+          <th [attr.aria-sort]="state().sortBy === 'username' ? (state().sortDirection === 'asc' ? 'ascending' : 'descending') : 'none'">
+            <button class="sort-button" type="button" (click)="sort('username')" [attr.aria-label]="'Sort by employee'">
+              EMPLOYEE
+              <svg class="sort-indicator" [class.sort-indicator--active]="state().sortBy === 'username'" viewBox="0 0 16 16" aria-hidden="true">
+                @if (state().sortBy !== 'username') {
+                  <path d="m5 6 3-3 3 3M5 10l3 3 3-3" />
+                } @else if (state().sortDirection === 'asc') {
+                  <path d="M8 13V3m-4 4 4-4 4 4" />
+                } @else {
+                  <path d="M8 3v10m-4-4 4 4 4-4" />
+                }
+              </svg>
+            </button>
+          </th>
+          <th [attr.aria-sort]="state().sortBy === 'email' ? (state().sortDirection === 'asc' ? 'ascending' : 'descending') : 'none'">
+            <button class="sort-button" type="button" (click)="sort('email')" aria-label="Sort by email">
+              EMAIL
+              <svg class="sort-indicator" [class.sort-indicator--active]="state().sortBy === 'email'" viewBox="0 0 16 16" aria-hidden="true">
+                @if (state().sortBy !== 'email') { <path d="m5 6 3-3 3 3M5 10l3 3 3-3" /> }
+                @else if (state().sortDirection === 'asc') { <path d="M8 13V3m-4 4 4-4 4 4" /> }
+                @else { <path d="M8 3v10m-4-4 4 4 4-4" /> }
+              </svg>
+            </button>
+          </th>
+          <th [attr.aria-sort]="state().sortBy === 'group' ? (state().sortDirection === 'asc' ? 'ascending' : 'descending') : 'none'">
+            <button class="sort-button" type="button" (click)="sort('group')" aria-label="Sort by group">
+              GROUP
+              <svg class="sort-indicator" [class.sort-indicator--active]="state().sortBy === 'group'" viewBox="0 0 16 16" aria-hidden="true">
+                @if (state().sortBy !== 'group') { <path d="m5 6 3-3 3 3M5 10l3 3 3-3" /> }
+                @else if (state().sortDirection === 'asc') { <path d="M8 13V3m-4 4 4-4 4 4" /> }
+                @else { <path d="M8 3v10m-4-4 4 4 4-4" /> }
+              </svg>
+            </button>
+          </th>
+          <th [attr.aria-sort]="state().sortBy === 'status' ? (state().sortDirection === 'asc' ? 'ascending' : 'descending') : 'none'">
+            <button class="sort-button" type="button" (click)="sort('status')" aria-label="Sort by status">
+              STATUS
+              <svg class="sort-indicator" [class.sort-indicator--active]="state().sortBy === 'status'" viewBox="0 0 16 16" aria-hidden="true">
+                @if (state().sortBy !== 'status') { <path d="m5 6 3-3 3 3M5 10l3 3 3-3" /> }
+                @else if (state().sortDirection === 'asc') { <path d="M8 13V3m-4 4 4-4 4 4" /> }
+                @else { <path d="M8 3v10m-4-4 4 4 4-4" /> }
+              </svg>
+            </button>
+          </th>
+          <th class="salary-column" [attr.aria-sort]="state().sortBy === 'basicSalary' ? (state().sortDirection === 'asc' ? 'ascending' : 'descending') : 'none'">
+            <button class="sort-button" type="button" (click)="sort('basicSalary')" aria-label="Sort by basic salary">
+              BASIC SALARY
+              <svg class="sort-indicator" [class.sort-indicator--active]="state().sortBy === 'basicSalary'" viewBox="0 0 16 16" aria-hidden="true">
+                @if (state().sortBy !== 'basicSalary') { <path d="m5 6 3-3 3 3M5 10l3 3 3-3" /> }
+                @else if (state().sortDirection === 'asc') { <path d="M8 13V3m-4 4 4-4 4 4" /> }
+                @else { <path d="M8 3v10m-4-4 4 4 4-4" /> }
+              </svg>
+            </button>
+          </th>
+          <th class="action-column">ACTIONS</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (employee of visibleEmployees(); track employee.id) {
+          <tr>
+            <td><button class="employee-cell" type="button" (click)="openDetail(employee)"><span class="employee-avatar">{{ employee.firstName.charAt(0) }}{{ employee.lastName.charAt(0) }}</span><span><strong>{{ employee.firstName }} {{ employee.lastName }}</strong><small>{{ employee.username }}</small></span></button></td>
+            <td class="email-cell">{{ employee.email }}</td>
+            <td><span class="group-pill">{{ employee.group }}</span></td>
+            <td><span class="status-pill" [class.status-pill--permanent]="employee.status === 'Permanent'" [class.status-pill--contract]="employee.status === 'Contract'" [class.status-pill--probation]="employee.status === 'Probation'" [class.status-pill--intern]="employee.status === 'Intern'"><span></span>{{ employee.status }}</span></td>
+            <td class="salary-cell">{{ employee.basicSalary | currency:'IDR':'symbol':'1.0-0':'id-ID' }}</td>
+            <td><div class="row-actions"><button type="button" class="action-button action-button--edit" (click)="notifyEdit(employee)" aria-label="Edit employee">✎</button><button type="button" class="action-button action-button--delete" (click)="notifyDelete(employee)" aria-label="Delete employee">⌫</button><button type="button" class="action-button action-button--view" (click)="openDetail(employee)" aria-label="View employee details">↗</button></div></td>
+          </tr>
+        } @empty {
+          <tr><td colspan="6"><div class="empty-state"><span>⌕</span><strong>No employees found</strong><p>Try adjusting your search terms or clear the filters.</p><button class="text-button" type="button" (click)="clearFilters()">Clear search</button></div></td></tr>
+        }
+      </tbody>
+    </table>
+  </div>
+
+  <div class="table-footer">
+    <div class="page-size">Rows per page <select [value]="state().pageSize" (change)="onPageSizeChange($event)" aria-label="Rows per page"><option value="10">10</option><option value="20">20</option><option value="50">50</option><option value="100">100</option></select></div>
+    <div class="pagination"><span>{{ firstItem() }}–{{ lastItem() }} of {{ filteredEmployees().length }}</span><button type="button" aria-label="Previous page" [disabled]="state().page <= 1" (click)="goToPage(state().page - 1)">‹</button><span class="pagination__current">{{ state().page }} / {{ totalPages() }}</span><button type="button" aria-label="Next page" [disabled]="state().page >= totalPages()" (click)="goToPage(state().page + 1)">›</button></div>
+  </div>
+</section>

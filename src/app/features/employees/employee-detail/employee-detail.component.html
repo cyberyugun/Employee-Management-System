@@ -1,0 +1,17 @@
+@if (employee(); as employee) {
+  <div class="page-heading"><div><a class="back-link" routerLink="/app/employees">← Back to directory</a><span class="eyebrow">PEOPLE DIRECTORY / EMPLOYEE PROFILE</span><h1>Employee <em>profile</em></h1><p class="page-subtitle">A closer look at this team member's information.</p></div><button class="secondary-button" type="button" (click)="goBack()">← Back to list</button></div>
+
+  <section class="profile-card">
+    <div class="profile-cover"><div class="cover-orbit cover-orbit--one"></div><div class="cover-orbit cover-orbit--two"></div><span class="cover-label">PEOPLEFLOW · EMPLOYEE RECORD</span></div>
+    <div class="profile-intro"><div class="profile-avatar">{{ employee.firstName.charAt(0) }}{{ employee.lastName.charAt(0) }}</div><div class="profile-name"><h2>{{ employee.firstName }} {{ employee.lastName }}</h2><p>{{ employee.username }} <span>·</span> {{ employee.group }}</p></div><span class="status-badge" [class.status-badge--permanent]="employee.status === 'Permanent'" [class.status-badge--contract]="employee.status === 'Contract'" [class.status-badge--probation]="employee.status === 'Probation'" [class.status-badge--intern]="employee.status === 'Intern'"><span></span>{{ employee.status }}</span></div>
+
+    <div class="profile-content">
+      <div class="detail-section"><div class="section-heading"><span class="section-icon">◎</span><div><h3>Personal information</h3><p>Identity and contact details</p></div></div><div class="detail-grid"><div class="detail-item"><span>Full name</span><strong>{{ employee.firstName }} {{ employee.lastName }}</strong></div><div class="detail-item"><span>Username</span><strong>{{ employee.username }}</strong></div><div class="detail-item"><span>Email address</span><div class="email-value"><strong>{{ employee.email }}</strong><button type="button" (click)="copyEmail(employee.email)" aria-label="Copy email">⧉</button></div></div><div class="detail-item"><span>Date of birth</span><strong>{{ employee.birthDate | date:'dd MMMM yyyy':'':'id-ID' }}</strong></div></div></div>
+      <div class="section-divider"></div>
+      <div class="detail-section"><div class="section-heading"><span class="section-icon section-icon--green">▤</span><div><h3>Employment information</h3><p>Work assignment and compensation</p></div></div><div class="detail-grid"><div class="detail-item"><span>Department / group</span><strong>{{ employee.group }}</strong></div><div class="detail-item"><span>Employment status</span><strong>{{ employee.status }}</strong></div><div class="detail-item"><span>Basic salary</span><strong class="salary-value">{{ employee.basicSalary | currency:'IDR':'symbol':'1.2-2':'id-ID' }}</strong></div><div class="detail-item"><span>Description date & time</span><strong>{{ employee.description | date:'dd MMM yyyy, HH:mm':'':'id-ID' }}</strong></div></div></div>
+    </div>
+    <div class="profile-actions"><span>Record ID <strong>{{ employee.id }}</strong></span><button class="primary-button" type="button" (click)="goBack()">OK, back to directory <span>→</span></button></div>
+  </section>
+} @else {
+  <section class="not-found"><span>⌕</span><h2>Employee not found</h2><p>This employee record may have been removed or the link is invalid.</p><button class="primary-button" type="button" (click)="goBack()">Back to directory</button></section>
+}

@@ -1,0 +1,13 @@
+import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
+import { NotificationService } from '../../../core/services/notification.service';
+
+@Component({
+  selector: 'app-toast',
+  standalone: true,
+  templateUrl: './toast.component.html',
+  styleUrl: './toast.component.scss',
+  changeDetection: ChangeDetectionStrategy.OnPush,
+})
+export class ToastComponent {
+  readonly notificationService = inject(NotificationService);
+}

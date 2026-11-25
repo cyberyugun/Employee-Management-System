@@ -1,0 +1,88 @@
+:host { display: block; min-height: 100vh; }
+.shell { min-height: 100vh; }
+.sidebar {
+  position: fixed; inset: 0 auto 0 0; z-index: 30; display: flex; flex-direction: column;
+  width: 246px; padding: 1.65rem 1.15rem 1.1rem; background: #17233b; color: #fff;
+  overflow-y: auto;
+}
+.brand { display: flex; align-items: center; gap: 0.75rem; margin: 0 0 3rem 0.4rem; color: inherit; text-decoration: none; }
+.brand__mark { display: grid; width: 38px; height: 38px; place-items: center; border-radius: 12px; background: #7b8cff; color: #fff; font-size: 1.2rem; font-weight: 800; }
+.brand__name { font-size: 1rem; font-weight: 750; letter-spacing: -0.03em; }
+.brand__name small { display: block; margin-top: 0.18rem; color: #8592ab; font-size: 0.56rem; font-weight: 700; letter-spacing: 0.19em; }
+.sidebar__label { padding: 0 0.75rem; color: #7f8ba4; font-size: 0.62rem; font-weight: 800; letter-spacing: 0.16em; }
+.navigation { margin-top: 0.8rem; }
+.navigation__link { display: flex; align-items: center; gap: 0.85rem; padding: 0.82rem 0.85rem; border-radius: 10px; color: #b8c2d5; font-size: 0.87rem; font-weight: 600; text-decoration: none; transition: background 160ms ease, color 160ms ease; }
+.navigation__link:hover, .navigation__link--active { background: #293754; color: #fff; }
+.navigation__link--active { box-shadow: inset 3px 0 #8b9aff; }
+.navigation__icon { width: 20px; color: #a8b5ff; font-size: 1.1rem; text-align: center; }
+.sidebar__bottom { margin-top: auto; padding-top: 2rem; }
+.help-card { margin: 0 0 1rem; padding: 1rem; border: 1px solid #34415a; border-radius: 13px; background: #202e49; }
+.help-card__icon { display: grid; width: 28px; height: 28px; place-items: center; margin-bottom: 0.7rem; border-radius: 9px; background: #39496b; color: #bac5ff; }
+.help-card strong { font-size: 0.78rem; }
+.help-card p { margin: 0.35rem 0 0; color: #9eabc1; font-size: 0.68rem; line-height: 1.5; }
+.user-card { display: flex; align-items: center; gap: 0.65rem; padding-top: 1rem; border-top: 1px solid #35415a; }
+.avatar, .topbar__avatar { display: grid; width: 34px; height: 34px; flex: 0 0 auto; place-items: center; border-radius: 50%; background: #e9eaff; color: #535cbd; font-size: 0.68rem; font-weight: 800; }
+.user-card__info { min-width: 0; flex: 1; }
+.user-card__info strong, .user-card__info span { display: block; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.user-card__info strong { font-size: 0.74rem; }
+.user-card__info span { margin-top: 0.2rem; color: #93a0b7; font-size: 0.65rem; }
+.logout-button { border: 0; background: transparent; color: #9aa8c1; cursor: pointer; font-size: 1.2rem; }
+.main-content { min-height: 100vh; margin-left: 246px; display: flex; flex-direction: column; }
+.topbar { display: flex; height: 68px; align-items: center; justify-content: space-between; padding: 0 3.25rem; border-bottom: 1px solid var(--border); background: #fff; }
+.topbar__left { display: flex; min-width: 0; align-items: center; gap: 0.9rem; }
+.topbar__crumb { display: flex; align-items: center; gap: 0.65rem; color: #939bad; font-size: 0.78rem; }
+.topbar__crumb strong { color: #35405a; font-weight: 700; }
+.topbar__slash { color: #c3c8d2; }
+.topbar__right { display: flex; align-items: center; gap: 0.55rem; color: #8b95a8; font-size: 0.7rem; }
+.live-dot { width: 7px; height: 7px; border-radius: 50%; background: #28b47a; box-shadow: 0 0 0 3px #e2f7ed; }
+.topbar__avatar { width: 30px; height: 30px; margin-left: 0.7rem; }
+.menu-toggle { display: none; }
+.sidebar-backdrop { display: none; }
+.page-content { width: 100%; max-width: 1500px; flex: 1; margin: 0 auto; padding: 2.5rem 3.25rem 3rem; }
+.footer { display: flex; justify-content: space-between; padding: 1rem 3.25rem; color: #a1a8b6; font-size: 0.68rem; }
+@media (max-width: 1000px) {
+  .sidebar { width: 214px; }
+  .main-content { margin-left: 214px; }
+  .topbar, .page-content, .footer { padding-right: 1.7rem; padding-left: 1.7rem; }
+}
+@media (max-width: 720px) {
+  .sidebar {
+    position: fixed; inset: 0 auto 0 0; width: min(290px, 86vw); min-height: 100dvh;
+    padding: 1.35rem 1rem 1rem; overflow-y: auto; overscroll-behavior: contain;
+    box-shadow: 18px 0 48px rgb(12 22 42 / 22%);
+    transform: translateX(-105%); visibility: hidden;
+    transition: transform 220ms ease, visibility 220ms ease;
+  }
+  .sidebar--open { transform: translateX(0); visibility: visible; }
+  .brand { margin: 0 0 2.5rem 0.4rem; }
+  .sidebar__label, .navigation, .sidebar__bottom { display: block; }
+  .navigation { margin-top: 0.8rem; }
+  .sidebar__bottom { margin-top: auto; padding-top: 2rem; }
+  .sidebar-backdrop {
+    position: fixed; inset: 0; z-index: 20; display: block; width: 100%; height: 100%;
+    padding: 0; border: 0; background: rgb(12 20 35 / 48%); cursor: pointer;
+    animation: backdrop-enter 180ms ease-out;
+  }
+  .main-content { margin-left: 0; min-height: 100vh; }
+  .topbar { height: 60px; gap: 0.75rem; padding: 0 1rem; }
+  .topbar__left { gap: 0.8rem; }
+  .menu-toggle {
+    display: inline-flex; width: 38px; height: 38px; flex: 0 0 auto; flex-direction: column;
+    align-items: center; justify-content: center; gap: 5px; padding: 0; border: 1px solid var(--border);
+    border-radius: 10px; background: #fff; color: #35405a; cursor: pointer;
+  }
+  .menu-toggle span { display: block; width: 16px; height: 2px; border-radius: 2px; background: currentColor; }
+  .menu-toggle:focus-visible, .logout-button:focus-visible, .navigation__link:focus-visible {
+    outline: 3px solid #aab4ff; outline-offset: 3px;
+  }
+  .topbar__crumb { gap: 0.45rem; font-size: 0.72rem; white-space: nowrap; }
+  .topbar__right { gap: 0.35rem; }
+  .topbar__right > span:not(.live-dot):not(.topbar__avatar) { display: none; }
+  .topbar__avatar { width: 28px; height: 28px; margin-left: 0.2rem; }
+  .page-content { padding: 1.4rem 1rem 2rem; }
+  .footer { gap: 0.5rem; padding: 0.8rem 1rem; font-size: 0.62rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .sidebar, .sidebar-backdrop { transition: none; animation: none; }
+}
+@keyframes backdrop-enter { from { opacity: 0; } to { opacity: 1; } }

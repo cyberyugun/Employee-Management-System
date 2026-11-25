@@ -1,0 +1,10 @@
+@if (notificationService.current(); as toast) {
+  <aside class="toast" [class.toast--success]="toast.kind === 'success'" [class.toast--warning]="toast.kind === 'warning'" [class.toast--danger]="toast.kind === 'danger'" [class.toast--info]="toast.kind === 'info'" role="status" aria-live="polite">
+    <span class="toast__indicator" aria-hidden="true"></span>
+    <div class="toast__content">
+      <strong>{{ toast.title }}</strong>
+      <p>{{ toast.message }}</p>
+    </div>
+    <button class="toast__close" type="button" aria-label="Dismiss notification" (click)="notificationService.dismiss()">×</button>
+  </aside>
+}

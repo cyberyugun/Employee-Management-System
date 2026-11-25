@@ -1,0 +1,50 @@
+:host { display: block; max-width: 1050px; margin: 0 auto; }
+.page-heading { display: flex; align-items: flex-end; justify-content: space-between; gap: 1rem; margin-bottom: 1.5rem; }
+.back-link { display: block; width: fit-content; margin-bottom: 1.1rem; color: #7e89e8; font-size: 0.7rem; font-weight: 700; text-decoration: none; }
+.eyebrow { color: #8993a7; font-size: 0.61rem; font-weight: 800; letter-spacing: 0.16em; }
+h1 { margin: 0.42rem 0; color: #202c44; font-size: 2rem; font-weight: 800; letter-spacing: -0.06em; }
+h1 em { color: #7886ed; font-style: normal; }
+.page-subtitle { margin: 0; color: #8d97a9; font-size: 0.8rem; }
+.secondary-button { height: 37px; padding: 0 0.8rem; border: 1px solid #e2e6ee; border-radius: 7px; background: #fff; color: #778297; cursor: pointer; font: inherit; font-size: 0.68rem; font-weight: 700; }
+.profile-card { overflow: hidden; border: 1px solid var(--border); border-radius: 14px; background: #fff; }
+.profile-cover { position: relative; display: flex; height: 145px; align-items: flex-start; justify-content: flex-end; overflow: hidden; padding: 1.1rem 1.3rem; background: linear-gradient(115deg, #28395c, #5365a0 60%, #8490d9); }
+.cover-label { position: relative; z-index: 1; color: rgb(255 255 255 / 65%); font-size: 0.56rem; font-weight: 800; letter-spacing: 0.17em; }
+.cover-orbit { position: absolute; border: 1px solid rgb(255 255 255 / 13%); border-radius: 50%; }
+.cover-orbit--one { width: 290px; height: 290px; top: -160px; left: 8%; }
+.cover-orbit--two { width: 420px; height: 420px; top: -265px; left: 32%; }
+.profile-intro { display: flex; align-items: center; gap: 1rem; margin-top: 3rem; padding: 0 1.8rem 1.3rem; border-bottom: 1px solid #f0f1f5; }
+.profile-avatar { display: grid; width: 76px; height: 76px; flex: 0 0 auto; place-items: center; margin-top: -36px; border: 5px solid #fff; border-radius: 22px; background: #eef0ff; color: #747fe0; font-size: 1.35rem; font-weight: 850; }
+.profile-name { min-width: 0; flex: 1; padding-top: 0.3rem; }
+.profile-name h2 { margin: 0; color: #2d3952; font-size: 1.16rem; font-weight: 800; letter-spacing: -0.04em; }
+.profile-name p { margin: 0.3rem 0 0; color: #9aa3b2; font-size: 0.69rem; }
+.profile-name p span { padding: 0 0.3rem; }
+.status-badge { display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.4rem 0.65rem; border-radius: 6px; font-size: 0.62rem; font-weight: 750; }
+.status-badge > span { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.status-badge--permanent { background: #e9f8f0; color: #269b69; }
+.status-badge--contract { background: #edf3ff; color: #5680d1; }
+.status-badge--probation { background: #fff5e8; color: #cf9137; }
+.status-badge--intern { background: #f4efff; color: #9271cc; }
+.profile-content { padding: 1.65rem 1.8rem; }
+.section-heading { display: flex; align-items: center; gap: 0.7rem; margin-bottom: 1.1rem; }
+.section-icon { display: grid; width: 32px; height: 32px; place-items: center; border-radius: 9px; background: #eff0ff; color: #7884e6; font-size: 0.95rem; }
+.section-icon--green { background: #e8f8f0; color: #35a978; }
+.section-heading h3 { margin: 0; color: #3c4860; font-size: 0.8rem; font-weight: 800; }
+.section-heading p { margin: 0.2rem 0 0; color: #a3acb9; font-size: 0.63rem; }
+.detail-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.1rem 2rem; padding-left: 2.7rem; }
+.detail-item > span { display: block; margin-bottom: 0.35rem; color: #9aa4b3; font-size: 0.64rem; }
+.detail-item > strong, .email-value strong { color: #48546b; font-size: 0.75rem; font-weight: 750; overflow-wrap: anywhere; }
+.email-value { display: flex; align-items: center; gap: 0.4rem; }
+.email-value button { border: 0; background: transparent; color: #8792e9; cursor: pointer; font-size: 0.9rem; }
+.salary-value { color: #298d69 !important; }
+.section-divider { height: 1px; margin: 1.45rem 0; background: #eff0f4; }
+.profile-actions { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1rem 1.8rem; border-top: 1px solid #eff0f4; background: #fcfcfe; }
+.profile-actions > span { color: #a0a9b6; font-size: 0.61rem; }
+.profile-actions > span strong { margin-left: 0.3rem; color: #7b8699; font-weight: 650; }
+.primary-button { display: inline-flex; height: 39px; align-items: center; gap: 0.55rem; padding: 0 0.9rem; border: 0; border-radius: 7px; background: #7181f0; color: #fff; cursor: pointer; font: inherit; font-size: 0.68rem; font-weight: 750; }
+.primary-button:hover { background: #6272e5; }
+.primary-button span { font-size: 0.95rem; }
+.not-found { padding: 4rem 1rem; border: 1px solid var(--border); border-radius: 14px; background: #fff; text-align: center; }
+.not-found > span { color: #a5aed0; font-size: 2rem; }
+.not-found h2 { margin: 0.5rem 0; color: #34415a; font-size: 1rem; }
+.not-found p { margin: 0 0 1rem; color: #9aa3b2; font-size: 0.73rem; }
+@media (max-width: 650px) { .page-heading { align-items: flex-start; flex-direction: column; } .profile-cover { height: 105px; } .profile-intro { flex-wrap: wrap; padding: 0 1rem 1rem; } .profile-avatar { width: 64px; height: 64px; } .profile-name { flex-basis: calc(100% - 90px); } .status-badge { margin-left: 4.4rem; } .profile-content { padding: 1.3rem 1rem; } .detail-grid { grid-template-columns: 1fr; padding-left: 0; } .profile-actions { align-items: flex-start; flex-direction: column; padding: 1rem; } }

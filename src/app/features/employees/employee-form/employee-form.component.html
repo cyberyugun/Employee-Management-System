@@ -1,0 +1,91 @@
+<div class="page-heading">
+  <div><a class="back-link" routerLink="/app/employees">← Back to directory</a><span class="eyebrow">PEOPLE DIRECTORY / NEW RECORD</span><h1>Add <em>employee</em></h1><p class="page-subtitle">Add a new team member to your organisation.</p></div>
+  <span class="required-note"><span>*</span> All fields are required</span>
+</div>
+
+<form class="form-card" [formGroup]="form" (ngSubmit)="save()" novalidate>
+  <div class="form-section-heading"><span class="section-number">01</span><div><h2>Personal information</h2><p>Basic information used to identify this employee.</p></div></div>
+  <div class="form-grid">
+    <div class="form-field"><label for="username">Username <span>*</span></label><input id="username" type="text" formControlName="username" placeholder="e.g. alex.johnson" autocomplete="off"><small class="field-hint">Use letters, numbers, dots, underscores or hyphens.</small>@if (isInvalid('username')) { <small class="field-error">@if (form.controls.username.hasError('alreadyExists')) { Username already exists. } @else { Enter a valid username. }</small> }</div>
+    <div class="form-field"><label for="firstName">First name <span>*</span></label><input id="firstName" type="text" formControlName="firstName" placeholder="Enter first name">@if (isInvalid('firstName')) { <small class="field-error">First name is required.</small> }</div>
+    <div class="form-field"><label for="lastName">Last name <span>*</span></label><input id="lastName" type="text" formControlName="lastName" placeholder="Enter last name">@if (isInvalid('lastName')) { <small class="field-error">Last name is required.</small> }</div>
+    <div class="form-field"><label for="email">Email address <span>*</span></label><input id="email" type="email" formControlName="email" placeholder="name@company.com" autocomplete="email">@if (isInvalid('email')) { <small class="field-error">Enter a valid email address.</small> }</div>
+    <div class="form-field"><label for="birthDate">Birth date <span>*</span></label><input id="birthDate" type="date" formControlName="birthDate" [max]="maxBirthDate">@if (isInvalid('birthDate')) { <small class="field-error">@if (form.controls.birthDate.hasError('futureDate')) { Birth date cannot be later than today. } @else { Birth date is required. }</small> }</div>
+  </div>
+
+  <div class="form-divider"></div>
+  <div class="form-section-heading"><span class="section-number">02</span><div><h2>Employment details</h2><p>Role classification and compensation information.</p></div></div>
+  <div class="form-grid">
+    <div class="form-field"><label for="basicSalary">Basic salary (IDR) <span>*</span></label><div class="salary-input"><span>Rp</span><input id="basicSalary" type="number" min="1" step="1000" formControlName="basicSalary" placeholder="e.g. 8500000"></div>@if (isInvalid('basicSalary')) { <small class="field-error">Salary must be a number greater than zero.</small> }</div>
+    <div class="form-field"><label for="status">Employment status <span>*</span></label><select id="status" formControlName="status"><option value="Permanent">Permanent</option><option value="Contract">Contract</option><option value="Probation">Probation</option><option value="Intern">Intern</option></select>@if (isInvalid('status')) { <small class="field-error">Status is required.</small> }</div>
+    <div class="form-field">
+      <label id="group-label" for="groupDropdown">Group <span>*</span></label>
+      <div class="group-dropdown" (click)="$event.stopPropagation()" (keydown.escape)="closeGroupDropdown()">
+        <button
+          id="groupDropdown"
+          class="group-trigger"
+          [class.is-open]="isGroupDropdownOpen()"
+          [class.is-invalid]="isInvalid('group')"
+          type="button"
+          aria-haspopup="listbox"
+          aria-controls="groupOptions"
+          [attr.aria-expanded]="isGroupDropdownOpen()"
+          [attr.aria-label]="form.controls.group.value || 'Select employee group'"
+          (click)="toggleGroupDropdown()"
+        >
+          <span [class.placeholder]="!form.controls.group.value">
+            {{ form.controls.group.value || 'Select employee group' }}
+          </span>
+          <svg class="dropdown-chevron" viewBox="0 0 20 20" aria-hidden="true">
+            <path d="m5 7.5 5 5 5-5" />
+          </svg>
+        </button>
+
+        @if (isGroupDropdownOpen()) {
+          <div class="group-menu">
+            <div class="group-search-wrap">
+              <svg viewBox="0 0 20 20" aria-hidden="true">
+                <circle cx="8.8" cy="8.8" r="5.8" />
+                <path d="m13.2 13.2 4 4" />
+              </svg>
+              <input
+                id="groupSearch"
+                type="search"
+                [value]="groupSearch()"
+                (input)="groupSearch.set($any($event.target).value)"
+                placeholder="Search groups..."
+                aria-label="Search employee groups"
+                autocomplete="off"
+              >
+            </div>
+            <div id="groupOptions" class="group-options" role="listbox" aria-labelledby="group-label">
+              @for (group of filteredGroups(); track group) {
+                <button
+                  class="group-option"
+                  [class.is-selected]="form.controls.group.value === group"
+                  type="button"
+                  role="option"
+                  [attr.aria-selected]="form.controls.group.value === group"
+                  (click)="selectGroup(group)"
+                >
+                  <span>{{ group }}</span>
+                  @if (form.controls.group.value === group) {
+                    <span class="selected-check" aria-hidden="true">✓</span>
+                  }
+                </button>
+              } @empty {
+                <p class="no-group-results">No groups match your search.</p>
+              }
+            </div>
+          </div>
+        }
+      </div>
+      @if (isInvalid('group')) {
+        <small class="field-error">Please select a group.</small>
+      }
+    </div>
+    <div class="form-field"><label for="description">Description date & time <span>*</span></label><input id="description" type="datetime-local" formControlName="description">@if (isInvalid('description')) { <small class="field-error">Description date and time is required.</small> }</div>
+  </div>
+
+  <div class="form-actions"><a class="secondary-button" routerLink="/app/employees">Cancel</a><button class="primary-button" type="submit">Save employee <span>→</span></button></div>
+</form>
